@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1585781365787.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3240124119",
+    "id" : "FF30F331",
+    "lastKnownWriteTime" : 1585781377,
+    "last_content_update" : 1585781377963,
+    "path" : "C:/Users/ms3453n/OneDrive - University of Greenwich/GitHub/GtR/R/gtr_project_extract_function.R",
+    "project_path" : "R/gtr_project_extract_function.R",
+    "properties" : {
+        "cursorPosition" : "49,5",
+        "scrollLine" : "34",
+        "tempName" : "Untitled2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

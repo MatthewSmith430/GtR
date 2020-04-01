@@ -1,0 +1,244 @@
+#' @title gtr_project_person
+#'
+#' @description This function extracts project information, including individual collaborators
+#' @param url project URL from gtr.ukri.org
+#' @export
+#' @return Dataframe with projects and all individual collaborators
+
+gtr_project_person<-function(url){
+  firmTEST<-httr::GET(url)
+  firmTEXT<-httr::content(firmTEST, as="text")
+  JLfirm<-jsonlite::fromJSON(firmTEXT, flatten=TRUE)
+
+  ORG<-JLfirm$projectOverview$projectComposition
+
+  pt<-ORG$project$title
+
+  imp<-ORG$project$output
+
+  PUB<-nrow(ORG$project$publication)
+  if (purrr::is_empty(PUB)==TRUE){
+    PUB<-0
+  }else{PUB<-PUB}
+
+  if(purrr::is_empty(imp)==TRUE){
+    names_imp1<-c("collaborationOutput",
+                  "intellectualPropertyOutput",
+                  "policyInfluenceOutput",
+                  "productOutput",
+                  "researchMaterialOutput",
+                  "artisticAndCreativeProductOutput",
+                  "softwareAndTechnicalProductOutput",
+                  "researchDatabaseAndModelOutput",
+                  "spinOutOutput",
+                  "impactSummaryOutput",
+                  "furtherFundingOutput",
+                  "otherResearchOutput",
+                  "exploitationOutput",
+                  "disseminationOutput")
+    imp_info<-dplyr::tibble(name=names_imp1,len=0)
+  }else{
+    imp_l<-list()
+    for (j in 1:length(imp)){
+      imp_l[[j]]<-length(imp[[j]])
+    }
+    imp_info<-data.frame(name=names(imp),len=unlist(imp_l))
+  }
+
+
+
+  CO<-dplyr::filter(imp_info,
+                    imp_info$name=="collaborationOutput")
+  if(CO$len!=0){
+    CO_imp<-nrow(imp[["collaborationOutput"]])
+  }else{
+    CO_imp<-0
+  }
+
+  IP<-dplyr::filter(imp_info,
+                    imp_info$name=="intellectualPropertyOutput")
+  if(IP$len!=0){
+    IP_imp<-nrow(imp[["intellectualPropertyOutput"]])
+  }else{
+    IP_imp<-0
+  }
+
+  POL<-dplyr::filter(imp_info,
+                     imp_info$name=="policyInfluenceOutput")
+  if(POL$len!=0){
+    POL_imp<-nrow(imp[["policyInfluenceOutput"]])
+  }else{
+    POL_imp<-0
+  }
+
+  PROD<-dplyr::filter(imp_info,
+                      imp_info$name=="productOutput")
+  if(PROD$len!=0){
+    PROD_imp<-nrow(imp[["productOutput"]])
+  }else{
+    PROD_imp<-0
+  }
+
+  RM<-dplyr::filter(imp_info,
+                    imp_info$name=="researchMaterialOutput")
+  if(RM$len!=0){
+    RM_imp<-nrow(imp[["researchMaterialOutput"]])
+  }else{
+    RM_imp<-0
+  }
+
+  ART<-dplyr::filter(imp_info,
+                     imp_info$name=="artisticAndCreativeProductOutput")
+  if(ART$len!=0){
+    ART_imp<-nrow(imp[["artisticAndCreativeProductOutput"]])
+  }else{
+    ART_imp<-0
+  }
+
+  SOFT<-dplyr::filter(imp_info,
+                      imp_info$name=="softwareAndTechnicalProductOutput")
+  if(SOFT$len!=0){
+    SOFT_imp<-nrow(imp[["softwareAndTechnicalProductOutput"]])
+  }else{
+    SOFT_imp<-0
+  }
+
+  RESDATA<-dplyr::filter(imp_info,
+                         imp_info$name=="researchDatabaseAndModelOutput")
+  if(RESDATA$len!=0){
+    RESDATA_imp<-nrow(imp[["researchDatabaseAndModelOutput"]])
+  }else{
+    RESDATA_imp<-0
+  }
+
+  SPIN<-dplyr::filter(imp_info,
+                      imp_info$name=="spinOutOutput")
+  if(SPIN$len!=0){
+    SPIN_imp<-nrow(imp[["spinOutOutput"]])
+  }else{
+    SPIN_imp<-0
+  }
+
+  SUM<-dplyr::filter(imp_info,
+                     imp_info$name=="impactSummaryOutput")
+  if(SUM$len!=0){
+    SUM_imp<-nrow(imp[["impactSummaryOutput"]])
+  }else{
+    SUM_imp<-0
+  }
+
+  FUR<-dplyr::filter(imp_info,
+                     imp_info$name=="furtherFundingOutput")
+  if(FUR$len!=0){
+    FUR_imp<-nrow(imp[["furtherFundingOutput"]])
+  }else{
+    FUR_imp<-0
+  }
+
+  ORO<-dplyr::filter(imp_info,
+                     imp_info$name=="otherResearchOutput")
+  if(ORO$len!=0){
+    ORO_imp<-nrow(imp[["otherResearchOutput"]])
+  }else{
+    ORO_imp<-0
+  }
+
+  EXPL<-dplyr::filter(imp_info,
+                      imp_info$name=="exploitationOutput")
+  if(EXPL$len!=0){
+    EXPL_imp<-nrow(imp[["exploitationOutput"]])
+  }else{
+    EXPL_imp<-0
+  }
+
+  DISS<-dplyr::filter(imp_info,
+                      imp_info$name=="disseminationOutput")
+  if(DISS$len!=0){
+    DISS_imp<-nrow(imp[["disseminationOutput"]])
+  }else{
+    DISS_imp<-0
+  }
+
+  top<-ORG$project$researchTopic
+  sub1<-ORG$project$researchSubject
+
+  PROJ<-tibble::tibble(project_title=ORG$project$title,
+                       project_ref=ORG$project$grantReference,
+                       abstract_text=ORG$project$abstractText,
+                       project_value=ORG$project$fund$valuePounds,
+                       start_date=ORG$project$fund$start,
+                       end_date=ORG$project$fund$end,
+                       topic=paste(top$text,collapse="_"),
+                       subject=paste(sub1$text,collapse="_"),
+                       num_collaboration_output=CO_imp,
+                       num_intellectual_property_output=IP_imp,
+                       num_policy_influence_output=POL_imp,
+                       num_research_material_output=RM_imp,
+                       num_artistic_creative_product_output=ART_imp,
+                       num_software_technical_product_output=SOFT_imp,
+                       num_research_database_model_output=RESDATA_imp,
+                       num_spinout_output=SPIN_imp,
+                       num_impact_summary_output=SUM_imp,
+                       num_further_funding_output=FUR_imp,
+                       num_other_research_output=ORO_imp,
+                       num_exploitation_output=EXPL_imp,
+                       num_dissemination_output=DISS_imp,
+                       num_publications=PUB
+  )
+  #OM<-ORG$organisationRole
+  PR<-ORG$personRole
+
+
+
+
+  OMR<- sapply(unlist(PR$role,
+                      recursive=FALSE, use.names=FALSE), "[", 1)
+  PersonRole<-tibble::tibble(person_id=unlist(PR$id),
+                         first_name=unlist(PR$firstName),
+                         surname=unlist(PR$surname),
+                         #other_name=unlist(PR$otherNames),
+                      person_role=OMR)
+  #OM$
+  first_g<-gender::gender(names=PersonRole$first_name,
+                  method="genderize")
+  PersonRole<-dplyr::mutate(PersonRole,gender=first_g$gender)
+  PIG<-dplyr::filter(PersonRole,PersonRole$person_role=="PRINCIPAL_INVESTIGATOR")
+  if(length(PIG$person_role)==0){
+    PIgender<-NA
+  }else{PIgender<-PIG$gender}
+
+  PersonRole<-dplyr::mutate(PersonRole,PI_gender=PIgender)
+  DG<-table(PersonRole$gender)
+  DG<-as.data.frame(DG)
+  TOT_people<-sum(DG$Freq)
+  DGM<-dplyr::filter(DG,DG$Var1=="male")
+  TOT_male<-DGM$Freq
+  DGF<-dplyr::filter(DG,DG$Var1=="female")
+  TOT_female<-DGF$Freq
+  if(purrr::is_empty(TOT_female)==TRUE){
+    TOT_female<-0
+  }else{TOT_female<-TOT_female}
+  if(purrr::is_empty(TOT_male)==TRUE){
+    TOT_male<-0
+  }else{TOT_male<-TOT_male}
+
+  FEM_PROP<-TOT_female/TOT_people
+  PersonRole<-dplyr::mutate(PersonRole,
+                            total_people=TOT_people,
+                            total_male=TOT_male,
+                            total_female=TOT_female,
+                            proportion_female=FEM_PROP)
+
+  NR<-nrow(PersonRole)-nrow(PROJ)
+  PROJ[nrow(PROJ)+NR,] <- NA
+
+  DF1<-dplyr::bind_cols(PersonRole,PROJ)
+  DF2<-tidyr::fill(DF1,colnames(PROJ))
+
+
+
+
+  DF2$project_title<-gsub("&amp;","and",DF2$project_title)
+
+  return(DF2)
+}

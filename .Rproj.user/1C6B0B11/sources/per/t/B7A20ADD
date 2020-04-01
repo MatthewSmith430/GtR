@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1585780735350.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2556653787",
+    "id" : "B7A20ADD",
+    "lastKnownWriteTime" : 1585781208,
+    "last_content_update" : 1585781208879,
+    "path" : "C:/Users/ms3453n/OneDrive - University of Greenwich/GitHub/GtR/R/gtr_project_person_function.R",
+    "project_path" : "R/gtr_project_person_function.R",
+    "properties" : {
+        "cursorPosition" : "57,2",
+        "scrollLine" : "45",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
