@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1585838739881.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3153166337",
+    "id" : "E2B9BBF5",
+    "lastKnownWriteTime" : 1585838852,
+    "last_content_update" : 1585838852325,
+    "path" : "C:/Users/ms3453n/OneDrive - University of Greenwich/GitHub/GtR/R/gtr_project_impact_function.R",
+    "project_path" : "R/gtr_project_impact_function.R",
+    "properties" : {
+        "cursorPosition" : "21,52",
+        "scrollLine" : "0",
+        "tempName" : "Untitled2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

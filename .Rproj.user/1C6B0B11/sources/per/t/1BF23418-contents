@@ -16,11 +16,7 @@ gtr_project_impact<-function(url){
   pti<-ORG$project$id
   imp<-ORG$project$output
   imp_df<-purrr::map_df(imp,data.frame)
-  if(purrr::is_empty(imp_df)){
-    imp_df<-dplyr::tibble(project=pt,project_id=pti)
-  }else{
-    imp_df<-dplyr::mutate(project=pt,project_id=pti)
-  }
-
+  imp_df<-dplyr::mutate(project=pt,project_id=pti,
+                        potential_impact_statement=ORG$project$potentialImpactText)
   return(imp_df)
 }

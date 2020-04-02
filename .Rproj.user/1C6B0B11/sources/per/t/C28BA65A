@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1585816787414.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2560586517",
+    "id" : "C28BA65A",
+    "lastKnownWriteTime" : 1585816935,
+    "last_content_update" : 1585816935184,
+    "path" : "C:/Users/ms3453n/OneDrive - University of Greenwich/GitHub/GtR/R/gtr_potential_impact_function.R",
+    "project_path" : "R/gtr_potential_impact_function.R",
+    "properties" : {
+        "cursorPosition" : "2,73",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
