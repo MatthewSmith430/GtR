@@ -8,6 +8,6 @@ Description: This data allows to extract data on UK research council funded proj
 Depends: R (>= 2.15.1)
 License: GPL-3
 Encoding: UTF-8
-Imports: httr,jsonlite,dplyr,tibble,purrr,gender,tidyr,tidyselect
+Imports: httr,jsonlite,dplyr,tibble,purrr,gender,tidyr,tidyselect,igraph,stringr
 LazyData: true
 RoxygenNote: 7.0.2
