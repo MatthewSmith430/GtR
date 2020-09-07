@@ -14,7 +14,7 @@ weighted_projection<-function(DF){
   for (i in 1:length(NODE2_list)){
     event<-NODE2_list[[i]]
     DF1<-dplyr::filter(DF,DF$node2==event)
-    if(length(DF1$node1)>1){
+    if(length(unique(DF1$node1))>1){
       tmg<-igraph::graph_from_data_frame(DF1)
       bi_map<-igraph::bipartite_mapping(tmg)
       igraph::V(tmg)$type <- bi_map$type

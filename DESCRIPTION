@@ -1,6 +1,6 @@
 Package: GtR
 Type: Package
-Title:Access Gateway to Research data via the API
+Title: Access Gateway to Research data via the API
 Version: 0.1.0
 Author: Matthew Smith
 Maintainer: Matthew Smith <matt_smith.90@hotmail.co.uk>
@@ -10,4 +10,4 @@ License: GPL-3
 Encoding: UTF-8
 Imports: httr,jsonlite,dplyr,tibble,purrr,gender,tidyr,tidyselect,igraph,stringr
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
