@@ -15,6 +15,7 @@ gtr_graph_one_mode<-function(dataframe,weighted,start_year,
   ST<-start_year
   #DF<-dplyr::filter(dataframe,start_year>=ST)
   DF<-dataframe
+  DF[,"CHECK"] <- NA
   for (i in 1:length(DF$project_title)){
     YEARS<-DF$start_year[[i]]:DF$end_year[[i]]
     CHECK<-dplyr::intersect(YEARS,YEAR_LIST)
@@ -236,5 +237,6 @@ gtr_graph_one_mode<-function(dataframe,weighted,start_year,
 
   igraph::E(gs)$col <- F
   igraph::E(gs)$col[bb$backbone] <- T
+  return(gs)
 
 }
