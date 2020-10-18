@@ -170,6 +170,7 @@ gtr_project_extract<-function(url){
                  project_value=ORG$project$fund$valuePounds,
                  start_date=ORG$project$fund$start,
                  end_date=ORG$project$fund$end,
+                 funder=ORG$project$fund$funder$name,
                  topic=paste(top$text,collapse="_"),
                  subject=paste(sub1$text,collapse="_"),
                  num_collaboration_output=CO_imp,
@@ -208,6 +209,18 @@ gtr_project_extract<-function(url){
   DF2$project_title<-gsub("&amp;","and",DF2$project_title)
 
   DF3<-merge(DF2,OrgRole,by.x="org",by.y ="name",all.x=TRUE)
+  START_YEAR1<-as.Date(DF3$start_date)
+  START_YEAR<-lubridate::year(START_YEAR1)
 
-  return(DF3)
+  END_YEAR1<-as.Date(DF3$end_date)
+  END_YEAR<-lubridate::year(END_YEAR1)
+  DIFF<-as.vector(abs(difftime(START_YEAR1,END_YEAR1,units="weeks")))
+
+  DF4<-dplyr::mutate(DF3,
+                     start_year=START_YEAR,
+                     end_year=END_YEAR,
+                     duration_weeks=DIFF)
+
+
+  return(DF4)
 }

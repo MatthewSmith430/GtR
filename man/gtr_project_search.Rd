@@ -13,5 +13,5 @@ gtr_project_search(search_term)
 Dataframe with projects from search term
 }
 \description{
-This function seac=rches
+This function searches for projects in GtR associated with the search term
 }
