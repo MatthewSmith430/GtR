@@ -200,8 +200,9 @@ gtr_project_person<-function(url){
                       person_role=OMR)
   #OM$
   first_g<-gender::gender(names=PersonRole$first_name,
-                  method="genderize")
-  PersonRole<-dplyr::mutate(PersonRole,gender=first_g$gender)
+                  method="ssa",year="2012")
+  PR<-merge(PersonRole,first_g,by.x="first_name",by.y="name",all.x=TRUE)
+  PersonRole<-dplyr::select(PR,-c(proportion_male,proportion_female,year_min,year_max))
   PIG<-dplyr::filter(PersonRole,PersonRole$person_role=="PRINCIPAL_INVESTIGATOR")
   if(length(PIG$person_role)==0){
     PIgender<-NA
@@ -215,8 +216,11 @@ gtr_project_person<-function(url){
   TOT_people<-sum(DG$Freq)
   DGM<-dplyr::filter(DG,DG$Var1=="male")
   TOT_male<-DGM$Freq
+
   DGF<-dplyr::filter(DG,DG$Var1=="female")
   TOT_female<-DGF$Freq
+
+
   if(purrr::is_empty(TOT_female)==TRUE){
     TOT_female<-0
   }else{TOT_female<-TOT_female}
@@ -229,12 +233,13 @@ gtr_project_person<-function(url){
                             total_people=TOT_people,
                             total_male=TOT_male,
                             total_female=TOT_female,
-                            proportion_female=FEM_PROP)
+                            proportion_female=FEM_PROP,
+                            proportion_male=1-FEM_PROP)
 
-  NR<-nrow(PersonRole)-nrow(PROJ)
-  PROJ[nrow(PROJ)+NR,] <- NA
+  #NR<-nrow(PersonRole)-nrow(PROJ)
+  #PROJ[nrow(PROJ)+NR,] <- NA
 
-  DF1<-dplyr::bind_cols(PersonRole,PROJ)
+  DF1<-dplyr::bind_cols(PROJ,PersonRole)
   DF2<-tidyr::fill(DF1,colnames(PROJ))
 
 
