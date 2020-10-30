@@ -415,10 +415,21 @@ gtr_project_extract<-function(url){
 
   NUM_ORG<-dplyr::filter(UO_DF,Var1==0)
   NUM_ORG<-NUM_ORG$Freq
+  OC<-purrr::is_empty(NUM_ORG)
+  if (OC==TRUE){
+    NUM_ORG<-0
+  }else{
+    NUM_ORG<-NUM_ORG
+  }
 
   NUM_UNI<-dplyr::filter(UO_DF,Var1==1)
   NUM_UNI<-NUM_UNI$Freq
-
+  UC<-purrr::is_empty(NUM_UNI)
+  if (UC==TRUE){
+    NUM_UNI<-0
+  }else{
+    NUM_UNI<-NUM_UNI
+  }
   TOTAL_ORG<-NUM_ORG+NUM_UNI
 
   PROP_ORG<-NUM_ORG/TOTAL_ORG
