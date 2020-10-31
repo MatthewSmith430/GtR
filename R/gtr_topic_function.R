@@ -16,21 +16,25 @@ gtr_topic<-function(project_id){
 
   pt<-ORG$project$title
   topic<-ORG$project$researchTopic
-  if (topic$text=="Unclassified"){
-    topic_NAME<-"unknown"
-  }
-  else{
-    topic_len<-length(topic)
-    if (topic_len>0){
+
+  topic_len<-length(topic)
+  if (topic_len>0){
+    if (topic$text[[1]]=="Unclassified"){
+      topic_NAME<-"unknown"
+    }
+    else{
       topic_max<-dplyr::arrange(topic,
                                 dplyr::desc(percentage))
       topic_NAME<-topic_max$text[[1]]
       topic_NAME<-tolower(topic_NAME)
       topic_NAME<-stringr::str_replace_all(topic_NAME, " ", "")
-    }else{
-      topic_NAME<-"unknown"
+
     }
+
+    }else{
+    topic_NAME<-"unknown"
   }
+
 
 
   DF<-tibble::tibble(project_title=ORG$project$title,
