@@ -233,10 +233,10 @@ gtr_graph_one_mode<-function(dataframe,weighted,start_year,
 
   igraph::V(gs)$russell_group<-VERT3$russell_group
 
-  bb <- graphlayouts::layout_as_backbone(gs,keep=0.4)
+  #bb <- graphlayouts::layout_as_backbone(gs,keep=0.4)
 
-  igraph::E(gs)$col <- F
-  igraph::E(gs)$col[bb$backbone] <- T
+  #igraph::E(gs)$col <- F
+  #igraph::E(gs)$col[bb$backbone] <- T
   return(gs)
 
 }

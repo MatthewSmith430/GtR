@@ -199,10 +199,20 @@ gtr_project_extract<-function(url){
 
     OMR<- sapply(unlist(OM$role,
                         recursive=FALSE, use.names=FALSE), "[", 1)
+
+    POSTCODE<-OM$address.postCode
+    post_check<-is.null(POSTCODE)
+    if (post_check==TRUE){
+      POSTCODE1<-rep(NA,length(unlist(OM$name)))
+
+    }else{
+      POSTCODE1<-POSTCODE
+
+    }
     OrgRole<-data.frame(name=unlist(OM$name),
                     org_role=OMR,
                     org_region=OM$address.region,
-                    org_postcode=OM$address.postCode)
+                    org_postcode=POSTCODE1)
 
     MEMBERS<-tibble::tibble(org=OM$name)
     M2<-MEMBERS[1,]
@@ -437,7 +447,14 @@ gtr_project_extract<-function(url){
 
   ####Russell Group Lead org
   LEAD_CHECK<-dplyr::filter(DF5,org_role=="LEAD_RO")
-  LEAD_R<-LEAD_CHECK$russell_group
+  LEAD_LEN<-length(LEAD_CHECK$org)
+  if (LEAD_LEN==0){
+    LEAD_R<-0
+  }else{
+    LEAD_R<-LEAD_CHECK$russell_group
+  }
+
+
 
   DF6<-dplyr::mutate(DF5,
                      number_org=rep(NUM_ORG,length(DF5$org)),
@@ -445,7 +462,8 @@ gtr_project_extract<-function(url){
                      prop_org=rep(PROP_ORG,length(DF5$org)),
                      prop_uni=rep(PROP_UNI,length(DF5$org)),
                      total_players=rep(TOTAL_ORG,length(DF5$org)),
-                     lead_org_russell=rep(LEAD_R,length(DF5$org)))
+                     lead_org_russell=rep(LEAD_R,length(DF5$org))
+                     )
 
   return(DF6)
 }
