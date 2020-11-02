@@ -209,9 +209,21 @@ gtr_project_extract<-function(url){
       POSTCODE1<-POSTCODE
 
     }
+
+    REGION<-OM$address.region
+
+    region_check<-is.null(REGION)
+    if (region_check==TRUE){
+      REGION1<-rep(NA,length(unlist(OM$name)))
+
+    }else{
+      REGION1<-REGION
+
+    }
+
     OrgRole<-data.frame(name=unlist(OM$name),
                     org_role=OMR,
-                    org_region=OM$address.region,
+                    org_region=REGION1,
                     org_postcode=POSTCODE1)
 
     MEMBERS<-tibble::tibble(org=OM$name)
