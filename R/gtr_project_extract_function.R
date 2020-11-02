@@ -463,7 +463,7 @@ gtr_project_extract<-function(url){
   if (LEAD_LEN==0){
     LEAD_R<-0
   }else{
-    LEAD_R<-LEAD_CHECK$russell_group
+    LEAD_R<-LEAD_CHECK$russell_group[[1]]
   }
 
 
@@ -476,6 +476,8 @@ gtr_project_extract<-function(url){
                      total_players=rep(TOTAL_ORG,length(DF5$org)),
                      lead_org_russell=rep(LEAD_R,length(DF5$org))
                      )
+
+  DF6<-unique(DF6)
 
   return(DF6)
 }
