@@ -1,7 +1,7 @@
 Package: GtR
 Type: Package
 Title: Access Gateway to Research data via the API
-Version: 0.2.0
+Version: 0.3.0
 Author: Matthew Smith
 Maintainer: Matthew Smith <M.Smith3@napier.ac.uk>
 Description: This data allows to extract data on UK research council funded projects. Data is accessed from Gateway to Research API. 
