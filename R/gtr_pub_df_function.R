@@ -29,9 +29,19 @@ gtr_pub_df<-function(url){
   PUB6<-dplyr::rename(dplyr::count(PUB5, parentPublicationTitle,year), Freq = n)
 
   PUB7<-dplyr::mutate(PUB6,project_id=proj_id)
-  colnames(PUB7)<-c("pub_title","year","freq_per_year","project_id")
-  PUB8<-dplyr::select(PUB7,project_id,pub_title,year,freq_per_year)
+  colnames(PUB7)<-c("Title","year","freq_per_year","project_id")
+  PUB8<-dplyr::select(PUB7,project_id,Title,year,freq_per_year)
 
-  return(PUB8)
+  PUB8$Title<-tolower(PUB8$Title)
+  PUB8$Title<-gsub("&","and",PUB8$Title)
+
+
+  JOURNAL_DATA<-base::get("JOURNAL_DATA")
+
+  PUB9<-dplyr::left_join(PUB8,JOURNAL_DATA, by=c("Title","year"))
+  PUB10<-mutate(PUB9,SJR_mult_freq=SJR*freq_per_year)
+  PUB11<-mutate(PUB10,H_index_mult_freq=H_index*freq_per_year)
+
+  return(PUB11)
 }
 
