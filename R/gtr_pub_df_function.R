@@ -39,8 +39,8 @@ gtr_pub_df<-function(url){
   JOURNAL_DATA<-base::get("JOURNAL_DATA")
 
   PUB9<-dplyr::left_join(PUB8,JOURNAL_DATA, by=c("Title","year"))
-  PUB10<-mutate(PUB9,SJR_mult_freq=SJR*freq_per_year)
-  PUB11<-mutate(PUB10,H_index_mult_freq=H_index*freq_per_year)
+  PUB10<-dplyr::mutate(PUB9,SJR_mult_freq=SJR*freq_per_year)
+  PUB11<-dplyr::mutate(PUB10,H_index_mult_freq=H_index*freq_per_year)
 
   return(PUB11)
 }
