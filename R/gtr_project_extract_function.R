@@ -20,14 +20,21 @@ gtr_project_extract<-function(url){
   imp<-ORG$project$output
 
   H1<-ORG$project$publication
+  HC<-colnames(H1)
+  HC_CHECK<-"parentPublicationTitle"%in%HC
   PUB<-nrow(ORG$project$publication)
     if (purrr::is_empty(PUB)==TRUE){
       PUB<-0
       JPUB_num<-0
     }else{
       PUB<-PUB
-      JPUB<-dplyr::filter(H1,!is.na(parentPublicationTitle))
-      JPUB_num<-length(JPUB$title)
+      if (HC_CHECK==TRUE){
+        JPUB<-dplyr::filter(H1,!is.na(parentPublicationTitle))
+        JPUB_num<-length(JPUB$title)
+      }else{
+        JPUB_num<-0
+      }
+
       }
 
 
