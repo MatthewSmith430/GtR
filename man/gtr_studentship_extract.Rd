@@ -4,10 +4,10 @@
 \alias{gtr_studentship_extract}
 \title{gtr_studentship_extract}
 \usage{
-gtr_studentship_extract(url)
+gtr_studentship_extract(studentship_id)
 }
 \arguments{
-\item{url}{project URL from gtr.ukri.org}
+\item{studentship_id}{project id for studentship from gtr.ukri.org}
 }
 \value{
 Dataframe with studentships and all organisaitonal collaborators
