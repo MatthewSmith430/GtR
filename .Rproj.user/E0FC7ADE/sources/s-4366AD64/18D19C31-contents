@@ -12,15 +12,8 @@ gtr_pub_df<-function(url){
 
   ORG<-JLfirm$projectOverview$projectComposition
   proj_id<-ORG$project$grantReference
-  #COL<-ORG$project$output$collaborationOutput
-
-
-
-  ####I need to add commands to
 
   pt<-ORG$project$title
-
-
 
   imp<-ORG$project$output
 
