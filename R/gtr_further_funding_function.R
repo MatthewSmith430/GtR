@@ -14,8 +14,11 @@ gtr_further_funding<-function(url){
   imp<-ORG$project$output
   funding_df<-imp$furtherFundingOutput
   funding_df<-dplyr::mutate(funding_df,project_id=proj_id)
-  FDF<-dplyr::select(funding_df,project_id,fundingOrg,amountPounds,sector,
-                     fundingRef,description,currCountryCode,
+  FDF<-dplyr::select(funding_df,
+                     project_id,fundingOrg,
+                     amountPounds,sector,
+                     #fundingRef,
+                     description,currCountryCode,
                      country,start,end)
   FDF_S<-dplyr::select(FDF,fundingOrg,amountPounds)
   FDF_S1<-dplyr::group_by(FDF_S,fundingOrg)
