@@ -14,6 +14,19 @@ gtr_further_funding<-function(url){
   imp<-ORG$project$output
   funding_df<-imp$furtherFundingOutput
   funding_df<-dplyr::mutate(funding_df,project_id=proj_id)
+  fd_cn<-colnames(funding_df)
+  SC<-"start"%in%fd_cn
+  EC<-"end"%in%fd_cn
+  if (SC==FALSE){
+    funding_df<-dplyr::mutate(funding_df,start=NA)
+  }else{
+    funding_df<-funding_df
+  }
+  if (EC==FALSE){
+    funding_df<-dplyr::mutate(funding_df,end=NA)
+  }else{
+    funding_df<-funding_df
+  }
   FDF<-dplyr::select(funding_df,
                      project_id,fundingOrg,
                      amountPounds,sector,
