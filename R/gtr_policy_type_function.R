@@ -3,7 +3,7 @@
 #' @description This function provides a count of policy influence types for a project
 #' @param url project URL from gtr.ukri.org
 #' @export
-#' @return Dataframe with projects, types and number of items
+#' @return Dataframe with project id and number of  types
 gtr_policy_type<-function(url){
   POL1<-gtr_policy(url)
   POL2<-dplyr::group_by(POL1,

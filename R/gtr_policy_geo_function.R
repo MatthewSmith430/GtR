@@ -1,13 +1,13 @@
-#' @title gtr_policy_type
+#' @title gtr_policy_geo
 #'
-#' @description This function provides a count of policy influence types for a project
+#' @description This function provides a count of policy influence geography for a project
 #' @param url project URL from gtr.ukri.org
 #' @export
-#' @return Dataframe with projects, types and number of items
-gtr_policy_type<-function(url){
+#' @return Dataframe with project id and number of  regions
+gtr_policy_geo<-function(url){
   POL1<-gtr_policy(url)
   POL2<-dplyr::group_by(POL1,
-                        policy_influence_type)
+                        geographic_region)
   POL3<-dplyr::tally(POL2)
   proj_id<-unique(POL1$project_id)
   POL4<-dplyr::mutate(POL3,project_id=proj_id)

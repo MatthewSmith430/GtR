@@ -10,7 +10,7 @@ gtr_policy_type(url)
 \item{url}{project URL from gtr.ukri.org}
 }
 \value{
-Dataframe with projects, types and number of items
+Dataframe with project id and number of  types
 }
 \description{
 This function provides a count of policy influence types for a project
