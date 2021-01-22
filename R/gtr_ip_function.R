@@ -20,6 +20,25 @@ gtr_ip<-function(url){
                        ip_category=protection)
   patent_id<-ip_df$patentId
 
+  HHH<-colnames(ip_df)
+
+  YC<-"yearProtectionGranted" %in% HHH
+  LEN<-length(ip_df$id)
+  NA_info<-rep(NA,LEN)
+  if (YC==FALSE){
+    ip_df<-dplyr::mutate(ip_df,yearProtectionGranted=NA_info)
+  }else{
+    ip_df<-ip_df
+  }
+
+  DC<-"description"%in%HHH
+
+  if (DC==FALSE){
+    ip_df<-dplyr::mutate(ip_df,description=NA_info)
+  }else{
+    ip_df<-ip_df
+  }
+
   ip_df<-dplyr::select(ip_df,project_id,ip_category,
                        description,protection,yearProtectionGranted,
                        licensed)
