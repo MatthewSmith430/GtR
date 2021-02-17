@@ -15,9 +15,25 @@ gtr_topic<-function(project_id){
   ORG<-JLfirm$projectOverview$projectComposition
 
   pt<-ORG$project$title
-  topic<-ORG$project$researchTopic
+  pt_N<-purrr::is_null(pt)
 
-  topic_len<-length(topic)
+  if (pt_N==TRUE){
+    pt<-"NULL"
+  }else{
+    pt<-pt
+  }
+
+  topic<-ORG$project$researchTopic
+  topic_N<-purrr::is_null(pt)
+  if (topic_N==TRUE){
+    topic_len<-0
+  }else{
+    topic_len<-length(topic)
+  }
+
+
+
+
   if (topic_len>0){
     if (topic$text[[1]]=="Unclassified"){
       topic_NAME<-"unknown"
@@ -46,8 +62,8 @@ gtr_topic<-function(project_id){
 
     }else{
     topic_NAME<-"unknown"
-    DF<-tibble::tibble(project_title=ORG$project$title,
-                       project_ref=ORG$project$grantReference,
+    DF<-tibble::tibble(project_title=pt,
+                       project_ref=project_id,
                        project_id=project_id,
                        topic=topic_NAME
     )
