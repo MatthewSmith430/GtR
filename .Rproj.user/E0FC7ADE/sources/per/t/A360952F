@@ -12,7 +12,8 @@
     "properties": {
         "tempName": "Untitled1",
         "cursorPosition": "80,0",
-        "scrollLine": "0"
+        "scrollLine": "0",
+        "Source": "Source"
     },
     "folds": "",
     "lastKnownWriteTime": 1613752914,
