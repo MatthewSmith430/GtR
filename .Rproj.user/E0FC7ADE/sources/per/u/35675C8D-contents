@@ -1,0 +1,6 @@
+library(igraph)
+g <- make_full_bipartite_graph(10,5)
+V(g)$name<-LETTERS[1:15]
+ecount(g)
+E(g)$weight<-sample(1:5, 50, replace=TRUE)
+DF<-get.data.frame(g,what="edges")
