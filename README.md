@@ -20,7 +20,7 @@ library(GtR)
 ## Project Search
 
 You can search for projects associated with a search term- in the
-following example I will search for prjects associated with `social
+following example I will search for projects associated with `social
 network analysis`
 
 ``` r
