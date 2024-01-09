@@ -15,5 +15,5 @@ gtr_data_search(dataframe, search_term)
 Dataframe with projects from search term - the filtered dataframe
 }
 \description{
-This function seacrches in the title and abstract of a dataframe to filter project data.
+This function searches in the title and abstract of a dataframe to filter project data.
 }
