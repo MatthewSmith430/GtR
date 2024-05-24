@@ -14,6 +14,7 @@ library(devtools)
 devtools::install_github("MatthewSmith430/GtR")
 library(GtR)
 ```
+**Updates on the GtR API (such as whether it is down/unavailable) are posted [here](https://gtr.ukri.org/resources/api.html). Please check this page if you encounter isses.**
 
 *Please note that the README is incomplete and will be updated soon*
 
