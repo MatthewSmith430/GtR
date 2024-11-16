@@ -215,11 +215,12 @@ gtr_graph_one_mode<-function(dataframe,weighted,start_year,
         0, 0, 0, 0, 0, 0, 0, 0, 1)
 
   igraph::V(gs)$id<-igraph::V(gs)$name
-  ATTR_DF<-data.frame(name=U1,russell_group=R1,
+  ATTR_DF<-data.frame(name=tolower(U1),russell_group=R1,
                       uni=rep(1,length(U1)))
 
   VERT<-igraph::get.data.frame(gs,what="vertices")
   VERT<-dplyr::mutate(VERT,order=1:igraph::vcount(gs))
+  VERT$name<-tolower(VERT$name)
 
   VERT2<-merge(VERT,ATTR_DF,by="name",all.x=TRUE,all.y=FALSE)
 

@@ -6,9 +6,9 @@
 #' @return topic name
 
 gtr_topic_single<-function(project_id){
-  url<-paste0("https://gtr.ukri.org:443/projects?ref=",
+  url<-paste0("https://gtr.ukri.org/api/projects?ref=",
               project_id)
-  firmTEST<-httr::GET(url)
+  firmTEST<-httr::GET(url,,httr::add_headers("Accept: application/vnd.rcuk.gtr.json-v7"))
   firmTEXT<-httr::content(firmTEST, as="text")
   JLfirm<-jsonlite::fromJSON(firmTEXT, flatten=TRUE)
 
@@ -37,44 +37,48 @@ gtr_topic_single<-function(project_id){
   if (topic_len>0){
     if (topic$text[[1]]=="Unclassified"){
       topic_NAME<-"unknown"
-      #DF<-tibble::tibble(project_title=ORG$project$title,
-      #                   project_ref=ORG$project$grantReference,
-      #                   project_id=project_id,
-      #                   topic=topic_NAME
-      #)
+      DF<-tibble::tibble(project_title=ORG$project$title,
+                         project_ref=ORG$project$grantReference,
+                         project_id=project_id,
+                         topic=topic_NAME
+      )
     }
     else{
       topic_NAME<-topic$text
       TL<-length(topic_NAME)
-      topic_max<-dplyr::arrange(topic,
-                                dplyr::desc(percentage))
-      topic_NAME<-topic_max$text[[1]]
+      #topic_max<-dplyr::arrange(topic,
+      #                          dplyr::desc(percentage))
+      #topic_NAME<-topic_max$text[[1]]
       topic_NAME<-tolower(topic_NAME)
       topic_NAME<-stringr::str_replace_all(topic_NAME, " ", "")
 
-      #DF<-tibble::tibble(project_title=rep(ORG$project$title,TL),
-      #                   project_ref=rep(ORG$project$grantReference,TL),
-      #                   project_id=rep(project_id,TL),
-      #                   topic=topic_NAME
-      #)
+      DF<-tibble::tibble(project_title=rep(ORG$project$title,TL),
+                         project_ref=rep(ORG$project$grantReference,TL),
+                         project_id=rep(project_id,TL),
+                         topic=topic_NAME
+      )
 
     }
 
   }else{
     topic_NAME<-"unknown"
-    #DF<-tibble::tibble(project_title=pt,
-    #                   project_ref=project_id,
-    #                   project_id=project_id,
-    #                   topic=topic_NAME
-    #)
+    DF<-tibble::tibble(project_title=pt,
+                       project_ref=project_id,
+                       project_id=project_id,
+                       topic=topic_NAME
+    )
   }
 
 
 
 
 
+  DF$project_title<-gsub("&amp;","and",DF$project_title)
+  DF$topic<-gsub("&amp;","and",DF$topic)
+
   #DF$project_title<-gsub("&amp;","and",DF$project_title)
   topic_NAME<-gsub("&amp;","and",topic_NAME)
+  topic_NAME1<-topic_NAME[[1]]
 
-  return(topic_NAME)
+  return(topic_NAME1)
 }

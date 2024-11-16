@@ -3,9 +3,9 @@
 #' @description This function checks whether a project receives further fudning
 #' @param url project URL from gtr.ukri.org
 #' @export
-#' @return TRUE/FALSE for follow up funding
+#' @return Further funding dataframe
 gtr_further_funding_check<-function(url){
-  firmTEST<-httr::GET(url)
+  firmTEST<-httr::GET(url,httr::add_headers("Accept: application/vnd.rcuk.gtr.json-v7"))
   firmTEXT<-httr::content(firmTEST, as="text")
   JLfirm<-jsonlite::fromJSON(firmTEXT, flatten=TRUE)
 
@@ -13,12 +13,15 @@ gtr_further_funding_check<-function(url){
   proj_id<-ORG$project$grantReference
   imp<-ORG$project$output
   funding_df<-imp$furtherFundingOutput
-  CHECK<-is.list(funding_df)
-  if (CHECK==TRUE){
-    FUR<-FALSE
+  FFdf<-dplyr::mutate(funding_df,project_id=proj_id)
+  FFdf$start<-lubridate::year(anytime::anytime(FFdf$start/1000))
+  FFdf$end<-lubridate::year(anytime::anytime(FFdf$end/1000))
+  #CHECK<-is.list(funding_df)
+  #if (CHECK==TRUE){
+  #  FUR<-FALSE
 
-  }else{FUR<-TRUE}
+  #}else{FUR<-TRUE}
 
 
-  return(FUR)
+  return(FFdf)
 }

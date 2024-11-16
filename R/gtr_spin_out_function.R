@@ -5,7 +5,7 @@
 #' @export
 #' @return Dataframe with project id and whether it has a spin out
 gtr_spin_out<-function(url){
-  firmTEST<-httr::GET(url)
+  firmTEST<-httr::GET(url,httr::add_headers("Accept: application/vnd.rcuk.gtr.json-v7"))
   firmTEXT<-httr::content(firmTEST, as="text")
   JLfirm<-jsonlite::fromJSON(firmTEXT, flatten=TRUE)
 

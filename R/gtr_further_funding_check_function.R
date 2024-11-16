@@ -5,7 +5,7 @@
 #' @export
 #' @return TRUE/FALSE follow up funding
 gtr_further_funding_check<-function(url){
-  firmTEST<-httr::GET(url)
+  firmTEST<-httr::GET(url,httr::add_headers("Accept: application/vnd.rcuk.gtr.json-v7"))
   firmTEXT<-httr::content(firmTEST, as="text")
   JLfirm<-jsonlite::fromJSON(firmTEXT, flatten=TRUE)
 

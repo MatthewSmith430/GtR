@@ -6,7 +6,7 @@
 #' @return Dataframe with project_id, journal title, year, number of publications in that journal for a particular year
 
 gtr_pub_df<-function(url){
-  firmTEST<-httr::GET(url)
+  firmTEST<-httr::GET(url,httr::add_headers("Accept: application/vnd.rcuk.gtr.json-v7"))
   firmTEXT<-httr::content(firmTEST, as="text")
   JLfirm<-jsonlite::fromJSON(firmTEXT, flatten=TRUE)
 
@@ -44,7 +44,7 @@ gtr_pub_df<-function(url){
     PUB2<-dplyr::filter(PUB,!is.na(parentPublicationTitle))
     PUB3<-dplyr::select(PUB2,parentPublicationTitle,date)
 
-    PUB4<-dplyr::mutate(PUB3,year=lubridate::year(PUB3$date))
+    PUB4<-dplyr::mutate(PUB3,year=lubridate::year(anytime::anytime((PUB3$date/1000))))
 
     PUB5<-dplyr::group_by(PUB4,parentPublicationTitle,year)
 

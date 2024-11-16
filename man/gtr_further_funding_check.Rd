@@ -15,7 +15,7 @@ gtr_further_funding_check(url)
 \value{
 TRUE/FALSE follow up funding
 
-TRUE/FALSE for follow up funding
+Further funding dataframe
 }
 \description{
 This function checks whether a project receives further funding

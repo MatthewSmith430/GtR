@@ -5,9 +5,9 @@ Version: 0.3.0
 Author: Matthew Smith
 Maintainer: Matthew Smith <M.Smith_2@hw.ac.uk>
 Description: This R package allows to extract data on UK research council funded projects. Data is accessed from Gateway to Research API. 
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.6.0)
 License: GPL-3
 Encoding: UTF-8
-Imports: httr,jsonlite,dplyr,tibble,purrr,gender,tidyr,tidyselect,igraph,stringr,lubridate
+Imports: httr,jsonlite,dplyr,tibble,purrr,gender,tidyr,tidyselect,igraph,stringr,lubridate,anytime
 LazyData: true
 RoxygenNote: 7.2.3

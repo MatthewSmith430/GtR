@@ -6,9 +6,9 @@
 #' @return Dataframe with project id and topic
 
 gtr_topic<-function(project_id){
-  url<-paste0("https://gtr.ukri.org:443/projects?ref=",
+  url<-paste0("https://gtr.ukri.org/api/projects?ref=",
               project_id)
-  firmTEST<-httr::GET(url)
+  firmTEST<-httr::GET(url,,httr::add_headers("Accept: application/vnd.rcuk.gtr.json-v7"))
   firmTEXT<-httr::content(firmTEST, as="text")
   JLfirm<-jsonlite::fromJSON(firmTEXT, flatten=TRUE)
 

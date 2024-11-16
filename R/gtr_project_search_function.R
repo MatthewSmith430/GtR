@@ -9,6 +9,7 @@ gtr_project_search<-function(search_term){
   firmNAME<-gsub("&","%26",firmNAME)
   url_pg<-paste0("http://gtr.ukri.org/search/project?term=",firmNAME,"&page=1&fetchSize=100")
   #url_pg<-gsub(#'\', "", url_pg, fixed = TRUE)
+  #https://gtr.ukri.org/api
 
   firmTEST<-httr::GET(url_pg)
   pages<-firmTEST$headers$`link-pages`

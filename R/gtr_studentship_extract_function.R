@@ -6,8 +6,8 @@
 #' @return Dataframe with studentships and all organisaitonal collaborators
 
 gtr_studentship_extract<-function(studentship_id){
-  url<-paste0("https://gtr.ukri.org/projects?ref=studentship-",studentship_id)
-  firmTEST<-httr::GET(url)
+  url<-paste0("https://gtr.ukri.org/api/projects?ref=studentship-",studentship_id)
+  firmTEST<-httr::GET(url,httr::add_headers("Accept: application/vnd.rcuk.gtr.json-v7"))
   firmTEXT<-httr::content(firmTEST, as="text")
   JLfirm<-jsonlite::fromJSON(firmTEXT, flatten=TRUE)
 
@@ -55,10 +55,10 @@ gtr_studentship_extract<-function(studentship_id){
   DF2$project_title<-gsub("&amp;","and",DF2$project_title)
 
   DF3<-merge(DF2,OrgRole,by.x="org",by.y ="name",all.x=TRUE)
-  START_YEAR1<-as.Date(DF3$start_date)
+  START_YEAR1<-anytime::anytime(DF3$start_date/1000)
   START_YEAR<-lubridate::year(START_YEAR1)
 
-  END_YEAR1<-as.Date(DF3$end_date)
+  END_YEAR1<-anytime::anytime(DF3$end_date/1000)
   END_YEAR<-lubridate::year(END_YEAR1)
   DIFF<-as.vector(abs(difftime(START_YEAR1,END_YEAR1,units="weeks")))
 
@@ -239,6 +239,8 @@ gtr_studentship_extract<-function(studentship_id){
 
   ATTR_DF<-data.frame(name=U1,russell_group=R1,
                       uni=rep(1,length(U1)))
+  ATTR_DF$name<-tolower(ATTR_DF$name)
+  DF4$org<-tolower(DF4$org)
 
   DF5<-merge(DF4,ATTR_DF,by.x="org",by.y="name",all.x=TRUE,all.y=FALSE)
 
