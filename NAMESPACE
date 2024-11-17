@@ -3,6 +3,7 @@
 export(gtr_collaboration_outcome)
 export(gtr_data_search)
 export(gtr_funder_year)
+export(gtr_further_funding)
 export(gtr_further_funding_check)
 export(gtr_graph_one_mode)
 export(gtr_ip)

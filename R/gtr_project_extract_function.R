@@ -203,8 +203,8 @@ gtr_project_extract<-function(url){
                  project_ref=ORG$project$grantReference,
                  abstract_text=ORG$project$abstractText,
                  project_value=ORG$project$fund$valuePounds,
-                 start_date=ORG$project$fund$start,
-                 end_date=ORG$project$fund$end,
+                 start_date=anytime::anytime(ORG$project$fund$start/1000),
+                 end_date=anytime::anytime(ORG$project$fund$end/1000),
                  funder=ORG$project$fund$funder$name,
                  topic=top,
                  subject=paste(sub1$text,collapse="_"),
@@ -272,14 +272,14 @@ gtr_project_extract<-function(url){
   DF2$project_title<-gsub("&amp;","and",DF2$project_title)
 
   DF3<-merge(DF2,OrgRole,by.x="org",by.y ="name",all.x=TRUE)
-  START_YEAR1<-anytime::anytime(DF3$start_date/1000)
+  #START_YEAR1<-anytime::anytime(DF3$start_date/1000)
   #START_YEAR1<-as.Date(as.POSIXct(DF3$start_date/1000, origin="1970-01-01"))
 
-  START_YEAR<-lubridate::year(START_YEAR1)
+  START_YEAR<-lubridate::year(DF3$start_date)#START_YEAR1)
 
-  END_YEAR1<-anytime::anytime(DF3$end_date/1000)
-  END_YEAR<-lubridate::year(END_YEAR1)
-  DIFF<-as.vector(abs(difftime(START_YEAR1,END_YEAR1,units="weeks")))
+  #END_YEAR1<-anytime::anytime(DF3$end_date/1000)
+  END_YEAR<-lubridate::year(DF3$end_date)#END_YEAR1)
+  DIFF<-as.vector(abs(difftime(DF3$start_date,DF3$end_date,units="weeks")))
 
   DF4<-dplyr::mutate(DF3,
                      start_year=START_YEAR,
