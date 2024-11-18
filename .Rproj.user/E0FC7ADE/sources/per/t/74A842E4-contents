@@ -11,9 +11,10 @@ gtr_further_funding<-function(url){
 
   ORG<-JLfirm$projectOverview$projectComposition
   proj_id<-ORG$project$grantReference
+  proj_title<-ORG$project$title
   imp<-ORG$project$output
   funding_df<-imp$furtherFundingOutput
-  FFdf<-dplyr::mutate(funding_df,project_id=proj_id)
+  FFdf<-dplyr::mutate(funding_df,project_id=proj_id,project_title=proj_title)
   FFdf$start<-lubridate::year(anytime::anytime(FFdf$start/1000))
   FFdf$end<-lubridate::year(anytime::anytime(FFdf$end/1000))
   #CHECK<-is.list(funding_df)
