@@ -1,12 +1,13 @@
-#' @title gtr_project_extract
+#' @title gtr_project_summary_extract
 #'
-#' @description This function extracts project information, including organisational collaborators
+#' @description This function extracts project information, without organisational collaborators
 #' @param url project URL from gtr.ukri.org
 #' @export
-#' @return Dataframe with projects and all organisaitonal collaborators
+#' @return Dataframe with project information
 
 
 gtr_project_extract<-function(url){
+  #url<-"https://gtr.ukri.org/api/projects?ref=ES/M010163/1"
   firmTEST<-httr::GET(url,httr::add_headers("Accept: application/vnd.rcuk.gtr.json-v7"))
   firmTEXT<-httr::content(firmTEST, as="text")
   JLfirm<-jsonlite::fromJSON(firmTEXT, flatten=TRUE)
@@ -23,37 +24,37 @@ gtr_project_extract<-function(url){
   HC<-colnames(H1)
   HC_CHECK<-"parentPublicationTitle"%in%HC
   PUB<-nrow(ORG$project$publication)
-    if (purrr::is_empty(PUB)==TRUE){
-      PUB<-0
-      JPUB_num<-0
+  if (purrr::is_empty(PUB)==TRUE){
+    PUB<-0
+    JPUB_num<-0
+  }else{
+    PUB<-PUB
+    if (HC_CHECK==TRUE){
+      JPUB<-dplyr::filter(H1,!is.na(parentPublicationTitle))
+      JPUB_num<-length(JPUB$title)
     }else{
-      PUB<-PUB
-      if (HC_CHECK==TRUE){
-        JPUB<-dplyr::filter(H1,!is.na(parentPublicationTitle))
-        JPUB_num<-length(JPUB$title)
-      }else{
-        JPUB_num<-0
-      }
+      JPUB_num<-0
+    }
 
-      }
+  }
 
 
 
-    if(purrr::is_empty(imp)==TRUE){
-      names_imp1<-#c("collaborationOutput",
-                  #  "intellectualPropertyOutput",
-                  #  "policyInfluenceOutput",
-                  #  "productOutput",
-                  #  "researchMaterialOutput",
-                  #  "artisticAndCreativeProductOutput",
-                  #  "softwareAndTechnicalProductOutput",
-                  #  "researchDatabaseAndModelOutput",
-                  #  "spinOutOutput",
-                  #  "impactSummaryOutput",
-                  #  "furtherFundingOutput",
-                  #  "otherResearchOutput",
-                  #  "exploitationOutput",
-                  #  "disseminationOutput")
+  if(purrr::is_empty(imp)==TRUE){
+    names_imp1<-#c("collaborationOutput",
+      #  "intellectualPropertyOutput",
+      #  "policyInfluenceOutput",
+      #  "productOutput",
+      #  "researchMaterialOutput",
+      #  "artisticAndCreativeProductOutput",
+      #  "softwareAndTechnicalProductOutput",
+      #  "researchDatabaseAndModelOutput",
+      #  "spinOutOutput",
+      #  "impactSummaryOutput",
+      #  "furtherFundingOutput",
+      #  "otherResearchOutput",
+      #  "exploitationOutput",
+      #  "disseminationOutput")
 
       c("collaborationOutputs","sortedCollaborationOutputs",
         "intellectualPropertyOutputs","sortedIntellectualPropertyOutputs",
@@ -73,211 +74,188 @@ gtr_project_extract<-function(url){
 
 
 
-      imp_info<-dplyr::tibble(name=names_imp1,len=0)
-    }else{
-      imp_l<-list()
-      for (j in 1:length(imp)){
-        imp_l[[j]]<-length(imp[[j]])
-      }
-      imp_info<-data.frame(name=names(imp),len=unlist(imp_l))
+    imp_info<-dplyr::tibble(name=names_imp1,len=0)
+  }else{
+    imp_l<-list()
+    for (j in 1:length(imp)){
+      imp_l[[j]]<-length(imp[[j]])
     }
+    imp_info<-data.frame(name=names(imp),len=unlist(imp_l))
+  }
 
-    CO<-dplyr::filter(imp_info,
-                      imp_info$name=="collaborationOutputs")
-    if(CO$len!=0){
-      CO_imp<-nrow(imp[["collaborationOutputs"]])
-    }else{
-      CO_imp<-0
-    }
+  CO<-dplyr::filter(imp_info,
+                    imp_info$name=="collaborationOutputs")
+  if(CO$len!=0){
+    CO_imp<-nrow(imp[["collaborationOutputs"]])
+  }else{
+    CO_imp<-0
+  }
 
-    IP<-dplyr::filter(imp_info,
-                      imp_info$name=="intellectualPropertyOutputs")
-    if(IP$len!=0){
-      IP_imp<-nrow(imp[["intellectualPropertyOutputs"]])
-    }else{
-      IP_imp<-0
-    }
+  IP<-dplyr::filter(imp_info,
+                    imp_info$name=="intellectualPropertyOutputs")
+  if(IP$len!=0){
+    IP_imp<-nrow(imp[["intellectualPropertyOutputs"]])
+  }else{
+    IP_imp<-0
+  }
 
-    POL<-dplyr::filter(imp_info,
-                       imp_info$name=="policyInfluenceOutputs")
-    if(POL$len!=0){
-      POL_imp<-nrow(imp[["policyInfluenceOutputs"]])
-    }else{
-      POL_imp<-0
-    }
+  POL<-dplyr::filter(imp_info,
+                     imp_info$name=="policyInfluenceOutputs")
+  if(POL$len!=0){
+    POL_imp<-nrow(imp[["policyInfluenceOutputs"]])
+  }else{
+    POL_imp<-0
+  }
 
-    PROD<-dplyr::filter(imp_info,
-                        imp_info$name=="productOutputs")
-    if(PROD$len!=0){
-      PROD_imp<-nrow(imp[["productOutputs"]])
-    }else{
-      PROD_imp<-0
-    }
+  PROD<-dplyr::filter(imp_info,
+                      imp_info$name=="productOutputs")
+  if(PROD$len!=0){
+    PROD_imp<-nrow(imp[["productOutputs"]])
+  }else{
+    PROD_imp<-0
+  }
 
-    RM<-dplyr::filter(imp_info,
-                      imp_info$name=="researchMaterialOutputs")
-    if(RM$len!=0){
-      RM_imp<-nrow(imp[["researchMaterialOutputs"]])
-    }else{
-      RM_imp<-0
-    }
+  RM<-dplyr::filter(imp_info,
+                    imp_info$name=="researchMaterialOutputs")
+  if(RM$len!=0){
+    RM_imp<-nrow(imp[["researchMaterialOutputs"]])
+  }else{
+    RM_imp<-0
+  }
 
-    ART<-dplyr::filter(imp_info,
-                       imp_info$name=="artisticAndCreativeProductOutputs")
-    if(ART$len!=0){
-      ART_imp<-nrow(imp[["artisticAndCreativeProductOutputs"]])
-    }else{
-      ART_imp<-0
-    }
+  ART<-dplyr::filter(imp_info,
+                     imp_info$name=="artisticAndCreativeProductOutputs")
+  if(ART$len!=0){
+    ART_imp<-nrow(imp[["artisticAndCreativeProductOutputs"]])
+  }else{
+    ART_imp<-0
+  }
 
-    SOFT<-dplyr::filter(imp_info,
-                        imp_info$name=="softwareAndTechnicalProductOutputs")
-    if(SOFT$len!=0){
-      SOFT_imp<-nrow(imp[["softwareAndTechnicalProductOutputs"]])
-    }else{
-      SOFT_imp<-0
-    }
+  SOFT<-dplyr::filter(imp_info,
+                      imp_info$name=="softwareAndTechnicalProductOutputs")
+  if(SOFT$len!=0){
+    SOFT_imp<-nrow(imp[["softwareAndTechnicalProductOutputs"]])
+  }else{
+    SOFT_imp<-0
+  }
 
-    RESDATA<-dplyr::filter(imp_info,
-                           imp_info$name=="researchDatabaseAndModelOutputs")
-    if(RESDATA$len!=0){
-      RESDATA_imp<-nrow(imp[["researchDatabaseAndModelOutputs"]])
-    }else{
-      RESDATA_imp<-0
-    }
+  RESDATA<-dplyr::filter(imp_info,
+                         imp_info$name=="researchDatabaseAndModelOutputs")
+  if(RESDATA$len!=0){
+    RESDATA_imp<-nrow(imp[["researchDatabaseAndModelOutputs"]])
+  }else{
+    RESDATA_imp<-0
+  }
 
-    SPIN<-dplyr::filter(imp_info,
-                        imp_info$name=="spinOutOutputs")
-    if(SPIN$len!=0){
-      SPIN_imp<-nrow(imp[["spinOutOutputs"]])
-    }else{
-      SPIN_imp<-0
-    }
+  SPIN<-dplyr::filter(imp_info,
+                      imp_info$name=="spinOutOutputs")
+  if(SPIN$len!=0){
+    SPIN_imp<-nrow(imp[["spinOutOutputs"]])
+  }else{
+    SPIN_imp<-0
+  }
 
-    SUM<-dplyr::filter(imp_info,
-                       imp_info$name=="impactSummaryOutputs")
-    if(SUM$len!=0){
-      SUM_imp<-nrow(imp[["impactSummaryOutputs"]])
-    }else{
-      SUM_imp<-0
-    }
+  SUM<-dplyr::filter(imp_info,
+                     imp_info$name=="impactSummaryOutputs")
+  if(SUM$len!=0){
+    SUM_imp<-nrow(imp[["impactSummaryOutputs"]])
+  }else{
+    SUM_imp<-0
+  }
 
-    FUR<-dplyr::filter(imp_info,
-                       imp_info$name=="furtherFundingOutputs")
-    if(FUR$len!=0){
-      FUR_imp<-nrow(imp[["furtherFundingOutputs"]])
-    }else{
-      FUR_imp<-0
-    }
+  FUR<-dplyr::filter(imp_info,
+                     imp_info$name=="furtherFundingOutputs")
+  if(FUR$len!=0){
+    FUR_imp<-nrow(imp[["furtherFundingOutputs"]])
+  }else{
+    FUR_imp<-0
+  }
 
-    ORO<-dplyr::filter(imp_info,
-                       imp_info$name=="otherResearchOutputs")
-    if(ORO$len!=0){
-      ORO_imp<-nrow(imp[["otherResearchOutputs"]])
-    }else{
-      ORO_imp<-0
-    }
+  ORO<-dplyr::filter(imp_info,
+                     imp_info$name=="otherResearchOutputs")
+  if(ORO$len!=0){
+    ORO_imp<-nrow(imp[["otherResearchOutputs"]])
+  }else{
+    ORO_imp<-0
+  }
 
-    EXPL<-dplyr::filter(imp_info,
-                        imp_info$name=="exploitationOutputs")
-    if(length(EXPL$len)!=0){
-      EXPL_imp<-nrow(imp[["exploitationOutputs"]])
-    }else{
-      EXPL_imp<-0
-    }
+  EXPL<-dplyr::filter(imp_info,
+                      imp_info$name=="exploitationOutputs")
+  if(length(EXPL$len)!=0){
+    EXPL_imp<-nrow(imp[["exploitationOutputs"]])
+  }else{
+    EXPL_imp<-0
+  }
 
-    DISS<-dplyr::filter(imp_info,
-                        imp_info$name=="disseminationOutputs")
-    if(DISS$len!=0){
-      DISS_imp<-nrow(imp[["disseminationOutputs"]])
-    }else{
-      DISS_imp<-0
-    }
+  DISS<-dplyr::filter(imp_info,
+                      imp_info$name=="disseminationOutputs")
+  if(DISS$len!=0){
+    DISS_imp<-nrow(imp[["disseminationOutputs"]])
+  }else{
+    DISS_imp<-0
+  }
 
-    top<-gtr_topic_single(proj_id)
-    sub1<-ORG$project$researchSubject
+  top<-gtr_topic_single(proj_id)
+  sub1<-ORG$project$researchSubject
 
-    FFund<-gtr_further_funding_check(url)
+  FFund<-gtr_further_funding_check(url)
 
-    PROJ<-tibble::tibble(project_title=ORG$project$title,
-                 project_ref=ORG$project$grantReference,
-                 abstract_text=ORG$project$abstractText,
-                 project_value=ORG$project$fund$valuePounds,
-                 start_date=anytime::anytime(ORG$project$fund$start/1000),
-                 end_date=anytime::anytime(ORG$project$fund$end/1000),
-                 funder=ORG$project$fund$funder$name,
-                 topic=top,
-                 subject=paste(sub1$text,collapse="_"),
-                 num_collaboration_output=CO_imp,
-                 num_intellectual_property_output=IP_imp,
-                 num_policy_influence_output=POL_imp,
-                 num_research_material_output=RM_imp,
-                 num_artistic_creative_product_output=ART_imp,
-                 num_software_technical_product_output=SOFT_imp,
-                 num_research_database_model_output=RESDATA_imp,
-                 num_spinout_output=SPIN_imp,
-                 num_impact_summary_output=SUM_imp,
-                 further_funding=FFund,
-                 num_further_funding_output=FUR_imp,
-                 num_other_research_output=ORO_imp,
-                 num_exploitation_output=EXPL_imp,
-                 num_dissemination_output=DISS_imp,
-                 num_publications=PUB,
-                 num_journal_articles=JPUB_num
-    )
-    OM<-ORG$organisationRole
-    #ORG$organisationRole
-    OMRa<-OM$roles
-    OMRlist<-list()
-    for (z in 1:length(OM$name)){
-      NAMEom<-OM$name[[z]]
-      OMrole<-OMRa[[z]]
-      OrgRole_DF<-data.frame(name=NAMEom,
-                             org_role=OMrole$name[[1]])
+  PROJ<-tibble::tibble(project_title=ORG$project$title,
+                       project_ref=ORG$project$grantReference,
+                       abstract_text=ORG$project$abstractText,
+                       project_value=ORG$project$fund$valuePounds,
+                       start_date=anytime::anytime(ORG$project$fund$start/1000),
+                       end_date=anytime::anytime(ORG$project$fund$end/1000),
+                       funder=ORG$project$fund$funder$name,
+                       topic=top,
+                       subject=paste(sub1$text,collapse="_"),
+                       num_collaboration_output=CO_imp,
+                       num_intellectual_property_output=IP_imp,
+                       num_policy_influence_output=POL_imp,
+                       num_research_material_output=RM_imp,
+                       num_artistic_creative_product_output=ART_imp,
+                       num_software_technical_product_output=SOFT_imp,
+                       num_research_database_model_output=RESDATA_imp,
+                       num_spinout_output=SPIN_imp,
+                       num_impact_summary_output=SUM_imp,
+                       further_funding=FFund,
+                       num_further_funding_output=FUR_imp,
+                       num_other_research_output=ORO_imp,
+                       num_exploitation_output=EXPL_imp,
+                       num_dissemination_output=DISS_imp,
+                       num_publications=PUB,
+                       num_journal_articles=JPUB_num
+  )
+  OM<-ORG$organisationRole
+  #ORG$organisationRole
+  OMRa<-OM$roles
+  OMRlist<-list()
+  for (z in 1:length(OM$name)){
+    NAMEom<-OM$name[[z]]
+    OMrole<-OMRa[[z]]
+    OrgRole_DF<-data.frame(name=NAMEom,
+                           org_role=OMrole$name[[1]])
 
-      OMRlist[[z]]<-OrgRole_DF
-    }
-    #OMR1<-purrr::map_df(OM$roles,data.frame)
+    OMRlist[[z]]<-OrgRole_DF
+  }
+  #OMR1<-purrr::map_df(OM$roles,data.frame)
 
-    #OMR<-OMR1$name
-    #OMR<- sapply(unlist(OM$role,
-    #                    recursive=FALSE, use.names=FALSE), "[", 1)
+  #OMR<-OMR1$name
+  #OMR<- sapply(unlist(OM$role,
+  #                    recursive=FALSE, use.names=FALSE), "[", 1)
 
 
 
-    OrgRole<-purrr::map_df(OMRlist,data.frame)
-    POSTCODE<-OM$address.postCode
-    post_check<-is.null(POSTCODE)
-    if (post_check==TRUE){
-      POSTCODE1<-rep(NA,length(unlist(OM$name)))
+  OrgRole<-purrr::map_df(OMRlist,data.frame)
 
-    }else{
-      POSTCODE1<-POSTCODE
-
-    }
-
-    REGION<-OM$address.region
-
-    region_check<-is.null(REGION)
-    if (region_check==TRUE){
-      REGION1<-rep(NA,length(unlist(OM$name)))
-
-    }else{
-      REGION1<-REGION
-
-    }
-
-    OrgRole<-dplyr::mutate(OrgRole,org_region=REGION1,
-                    org_postcode=POSTCODE1)
-
-    MEMBERS<-tibble::tibble(org=OM$name)
-    M2<-MEMBERS[1,]
-    DF1<-dplyr::bind_cols(M2,PROJ)
-    if (length(MEMBERS$org)>1){
-      DF1[2:length(MEMBERS$org),]<-NA
-      DF1$org<-MEMBERS$org
-      DF2<-tidyr::fill(DF1,colnames(PROJ))
-    }else{DF2<-DF1}
+  MEMBERS<-tibble::tibble(org=OM$name)
+  M2<-MEMBERS[1,]
+  DF1<-dplyr::bind_cols(M2,PROJ)
+  if (length(MEMBERS$org)>1){
+    DF1[2:length(MEMBERS$org),]<-NA
+    DF1$org<-MEMBERS$org
+    DF2<-tidyr::fill(DF1,colnames(PROJ))
+  }else{DF2<-DF1}
 
 
 
@@ -524,9 +502,13 @@ gtr_project_extract<-function(url){
                      prop_uni=rep(PROP_UNI,length(DF5$org)),
                      total_players=rep(TOTAL_ORG,length(DF5$org)),
                      lead_org_russell=rep(LEAD_R,length(DF5$org))
-                     )
+  )
 
   DF6<-unique(DF6)
+
+  DF7<-dplyr::select(DF6,-c(org,org_role,russell_group,uni))
+
+  Df8<-unique(DF7)
 
   return(DF6)
 }

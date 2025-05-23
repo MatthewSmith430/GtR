@@ -227,11 +227,25 @@ gtr_project_extract<-function(url){
     )
     OM<-ORG$organisationRole
     #ORG$organisationRole
-    OMR1<-purrr::map_df(OM$roles,data.frame)
-    OMR<-OMR1$name
+    OMRa<-OM$roles
+    OMRlist<-list()
+    for (z in 1:length(OM$name)){
+      NAMEom<-OM$name[[z]]
+      OMrole<-OMRa[[z]]
+      OrgRole_DF<-data.frame(name=NAMEom,
+                             org_role=OMrole$name[[1]])
+
+      OMRlist[[z]]<-OrgRole_DF
+    }
+    #OMR1<-purrr::map_df(OM$roles,data.frame)
+
+    #OMR<-OMR1$name
     #OMR<- sapply(unlist(OM$role,
     #                    recursive=FALSE, use.names=FALSE), "[", 1)
 
+
+
+    OrgRole<-purrr::map_df(OMRlist,data.frame)
     POSTCODE<-OM$address.postCode
     post_check<-is.null(POSTCODE)
     if (post_check==TRUE){
@@ -253,9 +267,7 @@ gtr_project_extract<-function(url){
 
     }
 
-    OrgRole<-data.frame(name=unlist(OM$name),
-                    org_role=OMR,
-                    org_region=REGION1,
+    OrgRole<-dplyr::mutate(OrgRole,org_region=REGION1,
                     org_postcode=POSTCODE1)
 
     MEMBERS<-tibble::tibble(org=OM$name)
