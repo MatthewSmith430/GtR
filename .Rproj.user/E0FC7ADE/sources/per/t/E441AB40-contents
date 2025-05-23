@@ -6,7 +6,7 @@
 #' @return Dataframe with project information
 
 
-gtr_project_extract<-function(url){
+gtr_project_summary_extract<-function(url){
   #url<-"https://gtr.ukri.org/api/projects?ref=ES/M010163/1"
   firmTEST<-httr::GET(url,httr::add_headers("Accept: application/vnd.rcuk.gtr.json-v7"))
   firmTEXT<-httr::content(firmTEST, as="text")
